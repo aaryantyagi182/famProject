@@ -7,15 +7,17 @@ services:
   db:
     image: postgres
     environment:
-      POSTGRES_USER: aaryan.tyagi
+      POSTGRES_USER: famProject
       POSTGRES_DB: famProjectDB
       POSTGRES_PASSWORD: 12345
-      POSTGRES_HOST: localhost
+    ports:
+      - 5432:5432
     volumes:
       - pgdata:/var/lib/posgresql/data
 
   famProject:
     image: famproject:latest
+    hostname: famproject
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -26,6 +28,7 @@ services:
       - 8000:8000
     depends_on:
       - redis
+      - db
 
   celery:
     build:
@@ -35,6 +38,7 @@ services:
       - .:/famProject
     depends_on:
       - redis
+      - db
 
   celery-beat:
     build:
@@ -44,6 +48,7 @@ services:
       - .:/famProject
     depends_on:
       - redis
+      - db
 
 volumes:
   pgdata:
