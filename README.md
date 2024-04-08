@@ -25,3 +25,7 @@ then the filter options and next page and previous page button
 Please create a DB - famProjectDB 
 and then run the migration file
 python manage.py migrate
+
+HOME PAGE
+![HOME PAGE](https://github.com/aaryantyagi182/famProject/blob/main/famProject/home.jpg)
+![YOUTUBE LISITNG PAGE](https://github.com/aaryantyagi182/famProject/blob/main/famProject/youtubelist.png)
