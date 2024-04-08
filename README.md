@@ -17,7 +17,8 @@ fetch_and_store_youtube_videos() - this will add the data in the database, you c
 
 python manage.py runserver -- to start the seever
 Please go the - http://127.0.0.1:8000/
-There is a page with required response
+There is a page with required response, here you get an option to see the video list
+then the filter options and next page and previous page button
 
 
  I have already added a migration file
