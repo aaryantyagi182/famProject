@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <title>YouTube Data API</title>
+</head>
+
+<body>
+    <br>
+    <h1>Welcome To FamPay</h1>
+    <h2>YouTube Video List for Cricket</h2>
+    <br>
+    <br>
+      <a href="/youtube/v1/youtube/video/list/" class="btn btn-outline-primary">Show me the LIST</a>
+      <br>
+      <br>
+
+      <!-- <div>Sorting</div> -->
+      {% if nextPage %}
+      <form action="/youtube/v1/youtube/video/list/" method="get">
+        {% csrf_token %}
+        <label for="filter_title_desc">Choose Video Filter:</label>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description">
+        <br>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title">
+        <br>
+        <input type="submit" class="btn btn-outline-warning" style="color:black;" value="Filter">
+      </form>
+      {% endif %}
+
+      <br>
+
+      <div class="container-fluid">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+          {% for item in json %}
+            <div class="col">
+              <div class="card">
+                <img src="{{item.thumbnail_high_url}}" height="300px" class="card-img-top">
+                <div class="card-body">
+                  <h4 class="card-title">{{item.title}}</h4>
+                  <p class="card-text">{{item.description}}</p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">Published At: {{item.published_at|date:'d-m-Y, H:i:s'}}</small>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+      </div>
+
+{% if prevPage %}
+<form action="/youtube/v1/youtube/video/list/" method="get">
+  <input type="hidden" name="prev" value="{{prevPage}}">
+  <input type="hidden" name="description" value="{{description}}">
+    <input type="hidden" name="title" value="{{title}}">
+  <button id='prev-btn' type="submit" class="btn btn-outline-primary">Previous Page</button>
+</form>
+{% endif %}
+<br>
+
+{% if nextPage %}
+<form action="/youtube/v1/youtube/video/list/" method="get">
+  {% csrf_token %}
+  <input type="hidden" name="page" value="{{nextPage}}">
+    <input type="hidden" name="description" value="{{description}}">
+    <input type="hidden" name="title" value="{{title}}">
+  <button id='next-btn' type="submit" class="btn btn-outline-primary">Next Page</button>
+</form>
+{% endif %}
+<br>
+
+<script>
+    function callfunction () {
+        console.log('periodic call');
+        window.location.href = '/youtube/v1/youtube/video/list/';
+    }
+    window.onload = function () {
+    // callfunction();
+    setInterval(function () {
+        callfunction();}, 60000);
+    }
+</script>
+
+</body>
+</html>
